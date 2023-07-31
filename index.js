@@ -80,16 +80,9 @@ server.use(
 );
 server.use(passport.authenticate("session"));
 server.use(
-  cors(
-    {
-      exposedHeaders: ["X-Total-Count"],
-    },
-    {
-      origin: ["https://e-commerce-fawn-nu.vercel.app/"],
-      methods: ["POST", "GET"],
-      credentials: true,
-    }
-  )
+  cors({
+    exposedHeaders: ["X-Total-Count"],
+  })
 );
 server.use(express.json());
 server.use("/products", isAuth(), productsRouters.router);
