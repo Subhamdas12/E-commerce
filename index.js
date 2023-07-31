@@ -22,8 +22,13 @@ const { User } = require("./model/User");
 const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 const path = require("path");
 const { Order } = require("./model/Order");
-
+const redis = require("redis");
+const RedisStore = require("connect-redis")(session);
 //webhook
+
+const redisClient = redis.createClient({
+  // Configure Redis connection options here if needed
+});
 const endpointSecret = process.env.END_POINT_SECRET;
 
 server.post(
@@ -71,11 +76,19 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 //middlewares
 server.use(express.static(path.resolve(__dirname, "build")));
 server.use(cookieParser());
+// server.use(
+//   session({
+//     secret: process.env.SESSION_KEY,
+//     resave: false, // don't save session if unmodified
+//     saveUninitialized: false, // don't create session until something stored
+//   })
+// );
 server.use(
   session({
-    secret: process.env.SESSION_KEY,
-    resave: false, // don't save session if unmodified
-    saveUninitialized: false, // don't create session until something stored
+    store: new RedisStore({ client: redisClient }),
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: false,
   })
 );
 server.use(passport.authenticate("session"));
