@@ -74,21 +74,21 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 //middlewares
 server.use(express.static(path.resolve(__dirname, "build")));
 server.use(cookieParser());
-// server.use(
-//   session({
-//     secret: process.env.SESSION_KEY,
-//     resave: false, // don't save session if unmodified
-//     saveUninitialized: false, // don't create session until something stored
-//   })
-// );
 server.use(
   session({
-    store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_KEY,
-    resave: false,
-    saveUninitialized: false,
+    resave: false, // don't save session if unmodified
+    saveUninitialized: false, // don't create session until something stored
   })
 );
+// server.use(
+//   session({
+//     store: new RedisStore({ client: redisClient }),
+//     secret: process.env.SESSION_KEY,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 server.use(passport.authenticate("session"));
 server.use(
   cors({
