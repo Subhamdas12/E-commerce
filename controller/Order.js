@@ -4,6 +4,7 @@ exports.fetchOrderByUser = async (req, res) => {
   const { id } = req.user;
   try {
     const orders = await Order.find({ user: id });
+
     res.status(200).json(orders);
   } catch (err) {
     res.status(400).json(err);
