@@ -94,9 +94,8 @@ server.use("/carts", isAuth(), cartsRouter.router);
 server.use("/orders", isAuth(), ordersRouter.router);
 
 server.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "build", "index.html"))
+  res.sendFile(path.resolve("build", "index.html"))
 );
-// .resolve("build", "index.html")
 
 //passport strategy
 passport.use(
