@@ -23,12 +23,10 @@ const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 const path = require("path");
 const { Order } = require("./model/Order");
 const redis = require("redis");
-const RedisStore = require("connect-redis")(session);
+var RedisStore = require("connect-redis").default;
 //webhook
 
-const redisClient = redis.createClient({
-  // Configure Redis connection options here if needed
-});
+const redisClient = redis.createClient();
 const endpointSecret = process.env.END_POINT_SECRET;
 
 server.post(
@@ -86,7 +84,7 @@ server.use(cookieParser());
 server.use(
   session({
     store: new RedisStore({ client: redisClient }),
-    secret: "your-secret-key",
+    secret: process.env.SESSION_KEY,
     resave: false,
     saveUninitialized: false,
   })
