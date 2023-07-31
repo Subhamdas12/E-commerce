@@ -22,11 +22,9 @@ const { User } = require("./model/User");
 const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 const path = require("path");
 const { Order } = require("./model/Order");
-const redis = require("redis");
-var RedisStore = require("connect-redis").default;
+
 //webhook
 
-const redisClient = redis.createClient();
 const endpointSecret = process.env.END_POINT_SECRET;
 
 server.post(
@@ -81,14 +79,7 @@ server.use(
     saveUninitialized: false, // don't create session until something stored
   })
 );
-// server.use(
-//   session({
-//     store: new RedisStore({ client: redisClient }),
-//     secret: process.env.SESSION_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
+
 server.use(passport.authenticate("session"));
 server.use(
   cors({
