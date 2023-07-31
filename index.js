@@ -92,6 +92,11 @@ server.use("/users", isAuth(), usersRouter.router);
 server.use("/auths", authsRouter.router);
 server.use("/carts", isAuth(), cartsRouter.router);
 server.use("/orders", isAuth(), ordersRouter.router);
+
+server.get("*", (req, res) =>
+  res.sendFile(path.resolve("build", "index.html"))
+);
+
 //passport strategy
 passport.use(
   "local",
