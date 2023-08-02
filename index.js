@@ -66,7 +66,7 @@ server.post(
     response.send();
   }
 );
-//jwt options
+//jwt options//
 
 const opts = {};
 opts.jwtFromRequest = cookieExtractor;
