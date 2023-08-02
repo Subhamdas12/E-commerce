@@ -1,15 +1,23 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const orderSchema = new Schema({
-  items: { type: [Schema.Types.Mixed], required: true },
-  totalAmount: { type: Number },
-  totalItems: { type: Number },
-  user: { type: Schema.Types.ObjectId, ref: "User", require: true },
-  paymentMethod: { type: String, require: true },
-  paymentStatus: { type: String, default: "pending" },
-  status: { type: String, default: "pending" },
-  selectedAddress: { type: Schema.Types.Mixed, require: true },
-});
+const paymentMethods = {
+  values: ["card", "cash"],
+  message: "enum validator failed for payment Methods",
+};
+
+const orderSchema = new Schema(
+  {
+    items: { type: [Schema.Types.Mixed], required: true },
+    totalAmount: { type: Number },
+    totalItems: { type: Number },
+    user: { type: Schema.Types.ObjectId, ref: "User", require: true },
+    paymentMethod: { type: String, require: true, enum: paymentMethods },
+    paymentStatus: { type: String, default: "pending" },
+    status: { type: String, default: "pending" },
+    selectedAddress: { type: Schema.Types.Mixed, require: true },
+  },
+  { timestamps: true }
+);
 const virtual = orderSchema.virtual("id");
 virtual.get(function () {
   return this._id;
