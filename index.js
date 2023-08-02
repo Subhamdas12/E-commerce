@@ -50,8 +50,8 @@ server.post(
         const paymentIntentSucceeded = event.data.object;
 
         const order = await Order.findById(
-          // paymentIntentSucceeded.metadata.orderId
-          paymentIntentSucceeded.body.orderId
+          paymentIntentSucceeded.metadata.orderId
+          // paymentIntentSucceeded.body.orderId
         );
         order.paymentStatus = "received";
         await order.save();
@@ -174,9 +174,6 @@ passport.deserializeUser(function (user, cb) {
 
 // This is your test secret API key.
 const stripe = require("stripe")(process.env.STRIPE_SERVER_KEY);
-
-// server.use(express.static("public"));
-server.use(express.json());
 
 server.post("/create-payment-intent", async (req, res) => {
   const { totalAmount, orderId } = req.body;
