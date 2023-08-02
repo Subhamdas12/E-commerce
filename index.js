@@ -50,7 +50,8 @@ server.post(
         const paymentIntentSucceeded = event.data.object;
 
         const order = await Order.findById(
-          paymentIntentSucceeded.metadata.orderId
+          // paymentIntentSucceeded.metadata.orderId
+          paymentIntentSucceeded.body.orderId
         );
         order.paymentStatus = "received";
         await order.save();
